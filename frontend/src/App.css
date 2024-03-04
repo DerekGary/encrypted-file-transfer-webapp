@@ -1,38 +1,41 @@
+/* App.css */
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Adjust content to start at the top */
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: 50px; /* Add some space at the top */
 }
 
-.App-link {
-  color: #61dafb;
+.App-header {
+  background-color: #404040; /* Slightly lighter gray for contrast */
+  padding: 20px;
+  border-radius: 10px; /* Curved edges */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  margin: 20px 0; /* Add some margin to lift the box */
+  width: 80%; /* Adjust width */
+  max-width: 600px; /* Max width to avoid too wide on large screens */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type="file"] {
+  margin: 10px 0;
+}
+
+button {
+  background-color: #1d9e33;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #51df68;
 }
