@@ -4,6 +4,10 @@ ENV PYTHONUNBUFFERED=1
 ENV NODE_MAJOR=20
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Set the environment variable for Watchpack polling
+# This allows for the React frontend to hot reload our changes.
+ENV WATCHPACK_POLLING=true
+
 # Define arguments for user creation
 ARG USERNAME=vscode
 ARG USER_UID=1000
