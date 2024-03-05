@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.UUID-label {
+  font-size: 0.5em;
+  margin: 10px;
+}
+
+#uuidInput {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.file-selectors {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  align-content: center;
+}
+
+.choose-file {
+  padding: 1.30em;
+}

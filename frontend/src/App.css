@@ -26,6 +26,17 @@ input[type="file"] {
   margin: 10px 0;
 }
 
+.uuid-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 15px;
+}
+
+.radio-btn {
+  font-size: 0.44em;
+}
+
 button {
   background-color: #1d9e33;
   border: none;
