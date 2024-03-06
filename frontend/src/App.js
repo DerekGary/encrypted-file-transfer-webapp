@@ -71,23 +71,43 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>AES-256 CBC File Encryption</p>
-        <input type="file" onChange={handleFileChange} />
-        <div>
-          <label>
-            <input type="radio" value="encrypt" checked={action === 'encrypt'} onChange={handleActionChange} /> Encrypt
-          </label>
-          <label>
-            <input type="radio" value="decrypt" checked={action === 'decrypt'} onChange={handleActionChange} /> Decrypt
-          </label>
+        <div className="inline-container">
+          <input type="file" onChange={handleFileChange} />
+          <div>
+            <label className="radio-btn">
+              <input type="radio" value="encrypt" checked={action === 'encrypt'} onChange={handleActionChange} /> Encrypt
+            </label>
+            <label className="radio-btn">
+              <input type="radio" value="decrypt" checked={action === 'decrypt'} onChange={handleActionChange} /> Decrypt
+            </label>
+          </div>
         </div>
-        {action === 'decrypt' && (
-          <input type="text" placeholder="Enter UUID for decryption" value={uuid} onChange={handleUUIDChange} />
-        )}
-        <button onClick={handleSubmit}>Submit</button>
-        {downloadLink && (
-          <a href={downloadLink} download={fileName}>Download {action === 'encrypt' ? 'Encrypted' : 'Decrypted'} File</a>
-        )}
+        <div className="submit-button-container">
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
       </header>
+      <div className="uuid-input-container">
+        <input
+          type="text"
+          placeholder="Enter UUID for Decryption"
+          value={uuid}
+          onChange={handleUUIDChange}
+        />
+      </div>
+      {downloadLink && (
+        <a href={downloadLink} download={fileName}>Download {action === 'encrypt' ? 'Encrypted' : 'Decrypted'} File</a>
+      )}
+      <div className="tips-section">
+        <p className="tips-title">How to Use</p>
+        <ol>
+          <li>Choose file to encrypt.</li>
+          <li>Click Encrypt and Submit.</li>
+          <li>Copy and store the UUID generated.</li>
+          <li>Choose the encrypted file.</li>
+          <li>Enter the UUID associated with the encrypted file.</li>
+          <li>Click Decrypt and Submit.</li>
+        </ol>
+      </div>
     </div>
   );
 }
