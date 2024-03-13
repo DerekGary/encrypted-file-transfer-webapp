@@ -1,7 +1,9 @@
-from django.urls import path, include, re_path
+# encrypted-file-transfer/backend/urls.py
+
+from django.urls import path, include
 from views import index
 
 urlpatterns = [
-    path('api/', include('core.urls')),  # Prefix all your API URLs with 'api/'
+    path('api/', include('core.urls')),
     path('', index, name='index'), 
 ]
