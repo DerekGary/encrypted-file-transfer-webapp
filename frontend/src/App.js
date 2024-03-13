@@ -1,3 +1,10 @@
+// encrypted-file-transfer/frontend/src/App.js
+// Frontend for the AES-256 CBC File Encryption project
+// This file contains the main React component for the frontend
+// It allows users to select a file, choose an action (encrypt or decrypt),
+// and submit the file for processing. It does this by sending a POST request
+// to the backend API, which processes the file and returns the result.
+
 import React, { useState } from 'react';
 import './App.css';
 
@@ -7,6 +14,7 @@ function App() {
   const [uuid, setUuid] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
   const [fileName, setFileName] = useState('');
+  const apiBaseUrl = 'api/';
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -28,6 +36,9 @@ function App() {
     setUuid(event.target.value);
   };
 
+  // Event handler for the submit button.
+  // Checks whether a file and action have been selected
+  // for encryption or decryption.
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file || !action) {
@@ -35,6 +46,8 @@ function App() {
       return;
     }
 
+    // If the file and action have been chosen,
+    // 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('action', action);
@@ -42,8 +55,9 @@ function App() {
       formData.append('uuid', uuid);
     }
 
+    
     try {
-      const response = await fetch('http://localhost:8000/process_file/', {
+      const response = await fetch(`${apiBaseUrl}/process_file/`, {
         method: 'POST',
         body: formData,
       });
@@ -52,7 +66,6 @@ function App() {
         const data = await response.json();
         if (action === 'encrypt') {
           setUuid(data.uuid); // Set UUID for possible decryption later
-          // No need to change fileName, it's set on file selection
         } else {
           setFileName(data.original_name); // Set the original file name for the download
         }
@@ -67,6 +80,19 @@ function App() {
     }
   };
 
+  // This section dictates the HTML for the frontend. It includes
+  // the file input, action selection, submit button, UUID input,
+  // and download link for the encrypted or decrypted file.
+  // It could also be thought of as being the entry point for the
+  // frontend application, as it is the main component rendered by
+  // the React application.
+
+  // If we would like to change the styling up for our applications,
+  // then we would need to modify the CSS file 'App.css' in the same
+  // directory as this file, and that would link up with the HTML found
+  // in this section. HTML is for the structure of the page, CSS is for
+  // the styling, and JavaScript (React-JS in this case) is for the interactivity.
+  // The JS code in this file is found above in the 'App' function.
   return (
     <div className="App">
       <header className="App-header">
@@ -100,12 +126,10 @@ function App() {
       <div className="tips-section">
         <p className="tips-title">How to Use</p>
         <ol>
-          <li>Choose file to encrypt.</li>
-          <li>Click Encrypt and Submit.</li>
-          <li>Copy and store the UUID generated.</li>
-          <li>Choose the encrypted file.</li>
-          <li>Enter the UUID associated with the encrypted file.</li>
-          <li>Click Decrypt and Submit.</li>
+          <li>Choose file to encrypt or decrypt.</li>
+          <li>Click 'Encrypt' or 'Decrypt' and 'Submit'.</li>
+          <li>For decryption, enter the UUID generated during encryption.</li>
+          <li>Download the resulting file.</li>
         </ol>
       </div>
     </div>

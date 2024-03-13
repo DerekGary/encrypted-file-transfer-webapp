@@ -1,3 +1,5 @@
+# encrypted-file-transfer/backend/core/models.py
+
 from django.db import models
 import uuid
 

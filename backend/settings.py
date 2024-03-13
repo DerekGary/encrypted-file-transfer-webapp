@@ -1,3 +1,4 @@
+# encrypted-file-transfer/backend/settings.py
 """
 Django settings for backend project.
 
@@ -11,8 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import logging
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Assuming all backend Django files are in /app
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -20,21 +23,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-d(7j9=&*)w%-m4bj!u9x3f68!zp58)px16+du#6a(r^!3(#h_e"
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost')]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+# I hate cors... so I'm just going to allow all origins for now.
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://172.19.0.2:3000",
-
+CSRF_TRUSTED_ORIGINS = [
+    # environment variable for the frontend URL
+    os.environ.get('FRONTEND_URL', f'http://localhost:{os.environ.get("FRONTEND_PORT", "3000")}'),
 ]
+
+# What's the difference between CSRF_TRUSTED_ORIGINS and CORS_ALLOWED_ORIGINS?
+# CSRF_TRUSTED_ORIGINS is used to specify which origins are allowed to send
+# cross-site requests. This is important for security reasons, as it helps
+# prevent cross-site request forgery (CSRF) attacks. If you're using Django's
+# CSRF protection middleware, you'll need to specify the origins that are
+# allowed to send requests to your site. This is done by setting the
+# CSRF_TRUSTED_ORIGINS setting in your Django settings file.
+#
+# CORS_ALLOWED_ORIGINS, on the other hand, is used to specify which origins
+# are allowed to make cross-origin requests to your site. This is important
+# for allowing requests from different domains, such as when you're building
+# a frontend application that needs to make requests to a backend API. If you're
+# using Django's CORS middleware, you'll need to specify the origins that are
+# allowed to make requests to your site. This is done by setting the
+# CORS_ALLOWED_ORIGINS setting in your Django settings file.
+CORS_ALLOWED_ORIGINS = [
+    os.environ.get('FRONTEND_URL', f'http://localhost:{os.environ.get("FRONTEND_PORT", "3000")}'),
+]
+
 
 # Application definition
 
@@ -95,13 +116,27 @@ WSGI_APPLICATION = "wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Test Db:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'myprojectdb',
+#         'USER': 'derek',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# }
+
+# Production DB:
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PASSWORD': 'postgres',
+        "NAME": os.environ.get('DB_NAME', 'default-name'),  # Default value is 'myproject-db'
+        "USER": os.environ.get('DB_USER', 'default-user'),  # Default value is 'postgres'
+        "PASSWORD": os.environ.get('DB_PASSWORD', 'default-password'), 
+        "HOST": os.environ.get('DB_HOST', 'default-host'),
+        "PORT": os.environ.get('DB_PORT', 'default-port'),  # Default value is '5432'
     }
 }
 
@@ -136,13 +171,48 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static URL is only used for development and not for
+# production, ie serving our React app using Nginx.
+STATIC_URL = '/static/'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+# Directory where Django will store collected static files
+# Adjust if necessary to match your desired path for static files
 
-STATIC_URL = "static/"
+# REACT_APP_DIR isn't needed since we're serving our React app using Nginx.
+# REACT_APP_DIR is a variable that points to the build directory
+# of our React app. It's used in cases whenever you'd want your
+# backend to serve the frontend as well. In this case, we're
+# offloading this responsibility to Nginx, and using Django
+# solely for backend functionality.
+# REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend/build')
+
+# Directory where Django will store collected static files.
+# This application doesn't store static files, as they are
+# passed from the front end to the backend as blobs. A blob is
+# essentially binary data that is only temporarily stored in memory
+# for encrypting and decrypting, and is not stored on the server.
+# It was only added here because Django gets angry if it's not there.
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Logging added for spotting AWS RDS connection issues and other
+# potential problems during the deployment process.
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': { 
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler', 
+        },
+    },
+    'loggers': {
+        'django': { 
+            'handlers': ['console'], 
+            'level': 'DEBUG',
+            'propagate': True, 
+        },
+    },
+}
