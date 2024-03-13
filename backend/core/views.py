@@ -1,3 +1,5 @@
+# encrypted-file-transfer/backend/core/views.py
+
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .crypto_utils import encrypt_aes, decrypt_aes, generate_key_iv
