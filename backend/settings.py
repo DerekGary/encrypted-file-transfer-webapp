@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-d(7j9=&*)w%-m4bj!u9x3f68!zp58)px16+du#6a(r^!3(#h_e')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost')]
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost'), '0.0.0.0']
 
 # I hate cors... so I'm just going to allow all origins for now.
 CORS_ORIGIN_ALLOW_ALL = True
@@ -132,11 +132,11 @@ WSGI_APPLICATION = "wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DB_NAME', 'default-name'),  # Default value is 'myproject-db'
-        "USER": os.environ.get('DB_USER', 'default-user'),  # Default value is 'postgres'
-        "PASSWORD": os.environ.get('DB_PASSWORD', 'default-password'), 
-        "HOST": os.environ.get('DB_HOST', 'default-host'),
-        "PORT": os.environ.get('DB_PORT', 'default-port'),  # Default value is '5432'
+        "NAME": os.environ.get('DB_NAME', 'myprojectdb'),  # Default value is 'myproject-db'
+        "USER": os.environ.get('DB_USER', 'derek'),  # Default value is 'postgres'
+        "PASSWORD": os.environ.get('DB_PASSWORD', 'postgres'), 
+        "HOST": os.environ.get('DB_HOST', 'localhost'),
+        "PORT": os.environ.get('DB_PORT', '5432'),  # Default value is '5432'
     }
 }
 

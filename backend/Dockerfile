@@ -9,6 +9,12 @@ ENV PYTHONUNBUFFERED 1
 # Set work directory
 WORKDIR /app
 
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y bash && \
+    apt-get install -y netcat-openbsd && \
+    apt-get clean
+
 # Install dependencies
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
