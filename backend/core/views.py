@@ -15,6 +15,12 @@ def test_endpoint(request):
     return JsonResponse({"message": "Test endpoint working!"})
 
 @csrf_exempt
+def generate_username(request):
+    # Directly return a JsonResponse with your name
+    logger.info("Test")
+    return JsonResponse({'username': 'Derek Gary'})
+
+@csrf_exempt
 def file_process_view(request):
     try:
         if request.method == 'POST' and request.FILES:

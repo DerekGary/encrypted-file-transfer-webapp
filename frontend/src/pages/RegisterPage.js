@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import handleRegisterClick from '../components/RegistrationButtonHandler';
 
 function RegisterPage() {
     return (
@@ -15,7 +16,7 @@ function RegisterPage() {
                             <h2>Registration</h2>
                             <p>Test<br></br>Login or register to get started!</p>
                             <Link to="/login" className="btn btn-primary mx-1">Login</Link>
-                            <Link to="/register" className="btn btn-success mx-1">Register</Link>
+                            <button onClick={handleRegisterClick}>Register</button>
                         </div>
                     </div>
                     <div className="col-md-3">

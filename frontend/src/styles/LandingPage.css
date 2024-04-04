@@ -18,7 +18,7 @@
     color: #f8f9fa;
 }
 
-/* Ensures navbar stays light in dark mode, but adjusts based on your needs */
+/* Ensures navbar stays light in dark mode */
 .dark-mode .navbar-light {
     background-color: #f8f9fa;
     color: #343a40;
