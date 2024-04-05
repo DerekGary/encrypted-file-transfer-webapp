@@ -1,6 +1,17 @@
 # encrypted-file-transfer/backend/core/views.py
 
 from django.http import JsonResponse, HttpResponse
+
+# Needed for user registration
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import AllowAny
+
 from django.views.decorators.csrf import csrf_exempt
 from .crypto_utils import encrypt_aes, decrypt_aes, generate_key_iv
 from .models import EncryptedFile
@@ -17,7 +28,7 @@ def test_endpoint(request):
 @csrf_exempt
 def generate_username(request):
     # Directly return a JsonResponse with your name
-    logger.info("Test")
+    logger.info("The Frontend has appropriately requested information from the backend regarding the generated username.")
     return JsonResponse({'username': 'Derek Gary'})
 
 @csrf_exempt
@@ -51,3 +62,23 @@ def file_process_view(request):
     except Exception as e:
         logger.error(f"Error processing file: {e}", exc_info=True)
         return HttpResponse('Server Error', status=500)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def register(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    email = request.data.get('email')
+
+    if not all([username, email, password]):
+        return Response({"error": "All fields are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({"error": "Username already taken."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(email=email).exists():
+        return Response({"error": "Email already in use."}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=username, email=email, password=password)
+    return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)

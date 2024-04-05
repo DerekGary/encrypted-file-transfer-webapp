@@ -7,4 +7,5 @@ urlpatterns = [
     path('process_file/', views.file_process_view, name='file_process_view'),
     path('test/', views.test_endpoint, name='test_endpoint'),
     path('generate_username/', views.generate_username, name='generate_username'),
+    path('register/', views.register_user, name='register_user'),
 ]
