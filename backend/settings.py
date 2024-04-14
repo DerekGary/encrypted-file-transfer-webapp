@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 import logging
 
@@ -36,6 +37,19 @@ CSRF_TRUSTED_ORIGINS = [
     # environment variable for the frontend URL
     os.environ.get('FRONTEND_URL', f'http://localhost:{os.environ.get("FRONTEND_PORT", "3000")}'),
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:80',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
+    'http://frontend:80',
+    'http://frontend:3000',
+    'http://frontend:8000',
+    'http://frontend:8080',
+    'http://localhost',
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # What's the difference between CSRF_TRUSTED_ORIGINS and CORS_ALLOWED_ORIGINS?
 # CSRF_TRUSTED_ORIGINS is used to specify which origins are allowed to send
@@ -68,8 +82,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "corsheaders",
-    "rest_framework",
-    "rest_framework_simplejwt",
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -88,7 +101,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        #'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -200,6 +212,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
+
 
 # Logging added for spotting AWS RDS connection issues and other
 # potential problems during the deployment process.

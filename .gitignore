@@ -1,0 +1,50 @@
+# General
+# docker-compose.dev.yml
+.DS_Store
+Thumbs.db
+node_modules/
+node_modules.old/
+package-lock.json.old
+
+
+# Python (keep these excludes, but make sure not to exclude React's build directory)
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env.py
+env
+.env
+venv/
+env/
+dist/
+*.egg-info/
+.eggs/
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.seed
+*.db
+*.sql
+*.sqlite
+db.sqlite3
+
+# Django
+*.env
+.env.*
+secrets.json
+
+# Frontend (Make sure not to ignore React's build output directory)
+node_modules/
+package-lock.json
+
+# Deployment
+/deployment/
+
+combined_project_files.txt
+combine_project_files.txt
+test.txt
+combine_project_files.py
