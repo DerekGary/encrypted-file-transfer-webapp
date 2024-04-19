@@ -1,7 +1,7 @@
 # backend/core/views.py
 
-import boto3
 from django.http import JsonResponse, HttpResponse
+import boto3
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
@@ -68,41 +68,19 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
-@ensure_csrf_cookie
-@permission_classes([AllowAny])
 def file_process(request):
     if request.method == 'POST' and request.FILES:
         file = request.FILES['file']
-        file_name = f"{uuid.uuid4()}-{request.FILES['file'].name}"
-        s3_client = boto3.client('s3', region_name='us-east-2')
-        bucket = 'secure-file-bucket'
-        
-        try:
-            # Upload File to S3 Bucket
-            s3_client.upload_fileobj(
-                file,
-                bucket,
-                file_name,
-            )
-            
-            presigned_url = s3_client.generate_presigned_url(
-                'get_object',
-                Params={'Bucket': bucket, 'Key': file_name},
-                ExpiresIn=86400  # Time in seconds (24 hours)
-            )
-
-            return JsonResponse({'message': 'File uploaded successfully.', 'url': presigned_url})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        return JsonResponse({'error': 'No file found'}, status=400)
+        action = request.POST.get('action', '')
+        logger.info(f"Received file for action {action}.")
+        return JsonResponse({'message': 'File processed successfully'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 
 
+@csrf_exempt
 @api_view(['GET'])
-@ensure_csrf_cookie
-@permission_classes([AllowAny])
 def test_s3_connection(request):
     """
     Test connectivity to AWS S3 by listing the buckets available.

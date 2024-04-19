@@ -27,29 +27,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-d(7j9=&*)w%-m4bj!u9x3f68!zp58)px16+du#6a(r^!3(#h_e')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_CREDENTIALS = True
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost'), '0.0.0.0']
-
-# I hate cors... so I'm just going to allow all origins for now.
-CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost'), '0.0.0.0', 'test-server-0.click', 'api.test-server-0.click',]
 
 CSRF_TRUSTED_ORIGINS = [
     # environment variable for the frontend URL
     os.environ.get('FRONTEND_URL', f'http://localhost:{os.environ.get("FRONTEND_PORT", "3000")}'),
+    'https://test-server-0.click', 'http://test-server-0.click', 'http://localhost:80', 'https://localhost:80',
+    'https://localhost:3000', 
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:80',
+    'https://localhost:3000',
     'http://localhost:3000',
-    'http://localhost:8000',
-    'http://localhost:8080',
-    'http://frontend:80',
-    'http://frontend:3000',
-    'http://frontend:8000',
-    'http://frontend:8080',
-    'http://localhost',
+    'https://localhost:80',
+    'http://localhost:80',
+    'https://test-server-0.click',
+    'http://test-server-0.click',
 ]
-CORS_ALLOW_CREDENTIALS = True
 
 # What's the difference between CSRF_TRUSTED_ORIGINS and CORS_ALLOWED_ORIGINS?
 # CSRF_TRUSTED_ORIGINS is used to specify which origins are allowed to send
@@ -68,7 +64,20 @@ CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOWED_ORIGINS setting in your Django settings file.
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('FRONTEND_URL', f'http://localhost:{os.environ.get("FRONTEND_PORT", "3000")}'),
+    'http://test-server-0.click', 'https://test-server-0.click', 'https://test-server-0.click:80'
 ]
+
+SESSION_COOKIE_AGE = 60
+
+CSRF_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'None'
 
 
 # Application definition
@@ -82,25 +91,34 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "corsheaders",
-    'rest_framework_simplejwt.token_blacklist',
+    'debug_toolbar',
+    'rest_framework',
+    'knox',
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "core.middleware.RequestLoggingMiddleware",
+]
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'knox.auth.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -174,6 +192,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -212,14 +233,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-     'ROTATE_REFRESH_TOKENS': True,
-     'BLACKLIST_AFTER_ROTATION': True
-}
 
 
 # Logging added for spotting AWS RDS connection issues and other

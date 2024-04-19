@@ -5,6 +5,9 @@ Thumbs.db
 node_modules/
 node_modules.old/
 package-lock.json.old
+combine.py
+combined.txt
+.gitignore
 
 
 # Python (keep these excludes, but make sure not to exclude React's build directory)
@@ -48,3 +51,9 @@ combined_project_files.txt
 combine_project_files.txt
 test.txt
 combine_project_files.py
+
+/ssh
+django-react-ec2.pem
+*.pem
+
+combined.txt

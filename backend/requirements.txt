@@ -4,4 +4,9 @@ djangorestframework
 cryptography
 django-cors-headers
 djangorestframework-simplejwt
+markdown
+django-filter
 gunicorn
+django-debug-toolbar
+boto3
+django-rest-knox
