@@ -10,3 +10,4 @@ gunicorn
 django-debug-toolbar
 boto3
 django-rest-knox
+uuid

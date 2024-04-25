@@ -1,0 +1,20 @@
+/* ./frontend/src/styles/LoadingAnimation.css */
+
+.dot-bricks {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+  animation: dot-bricks 2s infinite ease;
+}
+
+@keyframes dot-bricks {
+  0%, 100% {
+    box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+  }
+  50% {
+    box-shadow: 9991px 0 0 0 #9880ff, 9991px -16px 0 0 #9880ff, 10007px -16px 0 0 #9880ff;
+  }
+}
