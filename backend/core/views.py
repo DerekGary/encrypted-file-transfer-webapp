@@ -4,7 +4,7 @@ import boto3
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -68,8 +68,12 @@ logger = logging.getLogger(__name__)
 #     else:
 #         return JsonResponse({'error': 'Invalid username or password'}, status=401)
 
+def set_test_cookie(request):
+    response = JsonResponse({"message": "Test cookie set"})
+    response.set_cookie('test_cookie', 'test_value', max_age=300)  # 5 minutes for testing
+    return response
 
-@ensure_csrf_cookie
+@csrf_protect
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def file_process(request):
@@ -84,30 +88,51 @@ def file_process(request):
         file_size = 0
         
         # Chart the time file was received
-        created_at=timezone.now().isoformat()
+        created_at = timezone.now()
         
         # Create a new SecureFileUpload instance and store it in the database
         secure_file_upload = SecureFileUpload.objects.create(
-            main_id,
-            sub_id,
-            file_size,
-            created_at
+            main_id=main_id,
+            sub_id=sub_id,
+            file_size=file_size,
+            created_at=created_at
         )
         
         # Return the necessary information to the frontend
         response_data = {
-            'created': secure_file_upload.created_at,
-            'fileSize': secure_file_upload.file_size,
-            'files': [],
             'id': secure_file_upload.main_id,
-            'subId': secure_file_upload.sub_id
+            'subId': secure_file_upload.sub_id,
+            'fileSize': secure_file_upload.file_size,
+            'created': secure_file_upload.created_at.isoformat(),
+            'fileName': secure_file_upload.file_name
+        }
+        
+        download_url = f'https://test-server-0.click/download/{main_id}/{sub_id}/'
+        
+        response_data = {
+            'subId': sub_id,
+            'downloadUrl': download_url
         }
         
         return Response(response_data, status=status.HTTP_200_OK)
     
     return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
 
-@ensure_csrf_cookie
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def update_file(request, main_id):
+    try:
+        secure_file = SecureFileUpload.objects.get(main_id=main_id)
+        secure_file.file_name = request.data.get('fileName')
+        secure_file.file_size = request.data.get('fileSize')
+        secure_file.save()
+        return Response({'message': 'File updated successfully'}, status=status.HTTP_200_OK)
+    except SecureFileUpload.DoesNotExist:
+        return Response({'error': 'File not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+@csrf_protect
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def file_limits(request):
@@ -128,9 +153,10 @@ def file_limits(request):
         logger.error(f"\n\n\n == FILE METADATA ERROR ==\n\n\nFailed to send file limits to frontend: {str(e)}\n\n\n")
         return JsonResponse({'error': f"Failed to send file limits to frontend: {str(e)}"}, status=500)
 
+@csrf_protect
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def test_s3_connection(request):
+def test_s3(request):
     """
     Test connectivity to AWS S3 by listing the buckets available.
     """
@@ -148,6 +174,7 @@ def test_s3_connection(request):
         logger.error(f"\n\n\n == S3 BUCKET ERROR == \n\n\nFailed to connect to S3: {str(e)}\n\n\n")
         return JsonResponse({'error': f"Failed to connect to S3: {str(e)}"}, status=500)
 
+@csrf_protect
 @api_view(['GET'])
 def test_headers(request):
     """
@@ -156,6 +183,7 @@ def test_headers(request):
     headers = dict(request.headers)
     return JsonResponse({'received_headers': headers})
 
+@csrf_protect
 @api_view(['POST'])
 def test_csrf_and_headers(request):
     """
