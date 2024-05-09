@@ -1,5 +1,7 @@
 # Secure File Transfer
 
+## URL: http://test-server-0.click/
+
 ## Overview
 Secure File Transfer is a web application designed to securely encrypt, transfer, and decrypt files using modern cryptographic techniques. This project utilizes end-to-end encryption to ensure that files remain confidential and integral from the moment they are uploaded until they are downloaded and decrypted by the intended recipient.
 
