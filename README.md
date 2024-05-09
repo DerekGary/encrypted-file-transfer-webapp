@@ -32,7 +32,7 @@ cd backend
 pip install -r requirements.txt
 ```
 
-Set the following environment variables:
+Set the following environment variables (Requires AWS S3 Setup):
 ```bash
 DEBUG=1
 SECRET_KEY='your-secret-key'
