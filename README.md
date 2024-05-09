@@ -2,8 +2,14 @@
 
 ## URL: http://test-server-0.click/
 
+## Authors
+Derek Gary,
+Takaiya Jones
+
 ## Overview
 Secure File Transfer is a web application designed to securely encrypt, transfer, and decrypt files using modern cryptographic techniques. This project utilizes end-to-end encryption to ensure that files remain confidential and integral from the moment they are uploaded until they are downloaded and decrypted by the intended recipient.
+
+This was a group project that was completed to explore the minimization of collected user metadata for cloud-based encrypted file transfer and partially fulfill the course requirements for CS 4930 - Privacy and Censorship at the University of Colorado, Colorado Springs.
 
 ## Features
 - **File Encryption**: Files are encrypted client-side using the XChaCha20-Poly1305 algorithm before being uploaded.
