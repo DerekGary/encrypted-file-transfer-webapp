@@ -1,4 +1,5 @@
-// ./frontend/src/components/animations.jsx
+// Authors: Derek Gary, Takaiya Jones
+
 import '../styles/LoadingAnimation.css';
 
 const LoadingAnimation = () => {

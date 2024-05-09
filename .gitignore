@@ -55,5 +55,4 @@ combine_project_files.py
 /ssh
 django-react-ec2.pem
 *.pem
-
-combined.txt
+*.sh

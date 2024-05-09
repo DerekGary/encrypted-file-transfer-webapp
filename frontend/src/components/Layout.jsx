@@ -1,4 +1,4 @@
-// ./frontend/src/components/Layout.jsx
+// Authors: Derek Gary, Takaiya Jones
 
 import React from 'react';
 import { Link } from 'react-router-dom';

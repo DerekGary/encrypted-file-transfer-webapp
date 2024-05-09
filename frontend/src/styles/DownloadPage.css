@@ -1,0 +1,107 @@
+
+        .card-body>.row>.col-6>h4 {
+            color: var(--bs-gray-500);
+        }
+
+        .icon,
+        .download {
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .details-text {
+            size: 1.5em
+        }
+
+        .download-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .key-text {
+            width: 16rem;
+        }
+        
+        .icon:hover,
+        .download:hover {
+            border-color: var(--bs-gray-300);
+            background: var(--bs-gray-200);
+        }
+
+        .download:hover .download-icon {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+        .other-icon:hover {
+            color: #007bff;
+        }
+
+        .time-format {
+            color: var(--bs-gray-500);
+            font-weight: 400 !important;
+            font-size: small;
+        }
+
+        .time-colon {
+            font-size: 1.5rem;
+            font-weight: 500 !important;
+            color: var(--bs-gray-700);
+            padding-bottom: 1.7rem;
+        }
+
+        .allotment-row {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover,
+        .dropdown-item:active {
+            background-color: transparent;
+            color: black;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
+        .dropdown-item p {
+            pointer-events: none;
+            color: black;
+        }
+
+        .dropdown-item {
+            pointer-events: none;
+            cursor: default;
+            color: black;
+            margin-bottom: 0;
+        }
+
+        .allotment .row.border {
+            height: 65%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .allotment {
+                width: 100%;
+                display: block;
+            }
+
+            .allotment .row {
+                margin-top: 10px;
+            }
+
+            .allotment .icon,
+            .allotment .download-icon {
+                float: none;
+                display: block;
+                margin: 10px auto;
+            }
+
+            .share-icons .icon {
+                margin: 0 20px;
+            }
+}

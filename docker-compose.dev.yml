@@ -4,11 +4,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: myprojectdb
-      POSTGRES_USER: derek
-      POSTGRES_PASSWORD: postgres
+      TZ: UTC
     ports:
       - "5432:5432"
+    env_file:
+      - .env
 
   backend:
     build:
@@ -26,7 +26,8 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-      
+    environment:
+      TZ: UTC
 
   frontend:
     image: nginx:latest
@@ -34,12 +35,14 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro  #  Nginx configuration file location
-      - /etc/letsencrypt:/etc/letsencrypt:ro  # Path for accessing Let's Encrypt SSL Certs for HTTPS
-      - /etc/nginx/ssl:/etc/nginx/ssl:ro  # Path to Diffie-Hellman Key Exchange Enc.
-      - ./frontend/dist:/usr/share/nginx/html  # Frontend file location to serve with NGINX
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
+      - ./frontend/dist:/usr/share/nginx/html
     depends_on:
       - backend
+    environment:
+      TZ: UTC
 
 volumes:
   postgres_data:

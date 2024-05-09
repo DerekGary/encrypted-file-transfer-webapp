@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/download/:mainId/:subId" component={DownloadPage} />
+        <Route path="/download/:mainId/:subKey" element={<DownloadPage />} />
       </Routes>
   );
 }

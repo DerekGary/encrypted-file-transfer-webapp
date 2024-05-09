@@ -13,6 +13,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y bash && \
     apt-get install -y netcat-openbsd && \
+    apt-get install -y awscli && \
     apt-get clean
 
 # Install dependencies
