@@ -80,7 +80,7 @@ def file_process(request, givenID=None, givenSubID=None):
         # This also means that if you are using them in containerized environments (VMs), like ours, then this randomness can be
         # affected based on if the containers were spun up at the same time with similar profiles. Usually it means these operations take longer on VMs,
         # but the number itself should remain secure.
-        # Here's an old article that weread through that explains this niche topic: `https://strugglers.net/~andy/blog/2010/06/06/adventures-in-entropy-part-1/#Content-bal-title`
+        # Here's an old article that we read through that explains this niche topic: `https://strugglers.net/~andy/blog/2010/06/06/adventures-in-entropy-part-1/#Content-bal-title`
         
         ## Pythonic Note ##
         # for _ in range(24) is syntactic sugar in Python.
