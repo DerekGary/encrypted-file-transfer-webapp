@@ -1,6 +1,6 @@
 # Authors: Derek Gary, Takaiya Jones
 
-# Puroses: Specifies the format of our API end-point routes, along with
+# Purpose: Specifies the format of our API end-point routes, along with
 # what data should be carried with each route from the frontend to the backend.
 
 from django.urls import path
