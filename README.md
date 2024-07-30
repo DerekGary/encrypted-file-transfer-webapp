@@ -1,7 +1,5 @@
 # Secure File Transfer
 
-## URL: http://test-server-0.click/
-
 ## Authors
 Derek Gary,
 Takaiya Jones
